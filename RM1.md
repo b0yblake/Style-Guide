@@ -2,8 +2,8 @@
 
 ### 1-1. BEM
 
-- BEM (**Block__Element—Modifier**) Dựa trên phương pháp luận, hãy đọc ký doc trước khi đọc note này . [http://getbem.com/naming/](http://getbem.com/naming/)
-- Block : đại diện cho 1 khối riêng biệt, nó sẽ bao trùm và phân phối -tương tác với các thành phần khác của trang 1 cách gần như độc lập. Hãy tưởng tượng rằng, nếu viết theo phương pháp BEM, project có ít element, có các khối module lặp lại liên tục, còn không - hãy lựa chọn phương pháp khác.
+- BEM (**Block__Element—Modifier**) Dựa trên phương pháp luận, hãy đọc kỹ doc trước khi đọc note này . [http://getbem.com/naming/](http://getbem.com/naming/)
+- Block : đại diện cho 1 khối riêng biệt, nó sẽ bao trùm - tương tác với các thành phần khác của trang 1 cách gần như độc lập. Hãy tưởng tượng rằng, nếu viết theo phương pháp BEM, project có ít element, có các khối module lặp lại liên tục, còn không - hãy lựa chọn phương pháp khác.
 - Element : Phần con của "Block", để chỉ các thực thể cấp thấp hơn nhưng không hoàn toàn nhỏ lẻ.
   ```html
   <div class="form-login">
@@ -52,13 +52,13 @@
 ---
 ## 2. HTML
 
-- 정해진 클래스명 외에는 축약형, 줄임말을 사용하지 않는다.
+- Hãy chú ý các dạng viết tắt của tên class, nó không còn thích hợp trong thể kỷ 21. Nếu viết tắt, xin hãy làm như fb or google.
   ```html
   <!-- Bad -->
   <div class="box-search">
-    <strong class="box-sh__tit"></strong> <!-- sh 말줄임, tit 말줄임 -->
-    <span class="box-sh__txt"></span> <!-- sh 말줄임, txt 말줄임 -->
-    <p class="box-search__dsc"></p> <!-- dsc 말줄임 -->
+    <strong class="box-sh__tit"></strong> <!-- sh = shorthand/search/shit/sheet.., tit = title -->
+    <span class="box-sh__txt"></span> <!-- sh = shorthand/search/shit/sheet.., txt = text -->
+    <p class="box-search__dsc"></p> <!-- dsc = description/disc -->
   </div>
 
   <!-- Good -->
@@ -68,16 +68,17 @@
     <p class="box-search__desc"></p>
   </div>
   ```
-- 감싸는 영역은 `wrap` > `area` > `box` > `inner` 순으로 한다.  name이 같은 form 요소를 감쌀때는 `group`으로 통일한다.
+- Các cấp độ bao bọc khi viết `wrap` > `area` > `box` > `inner`.
+- `group` khi muốn gói 1 tổ hợp các phần tử giống nhau.
   ```html
   <!-- Bad -->
   <div class="box-search">
-    <div class="area-search"> <!-- box-search 안에 area-search가 있음 -->
+    <div class="area-search"> <!-- "box-search" nhỏ hơn "area-search" nên không hợp lý -->
       <div class="inner-search">
-          검색
+          Search
       </div>
     </div>
-    <div class="area-btn"> <!-- box-search 안에 area-btn이 있음 -->
+    <div class="area-btn"> <!-- "box-search" nhỏ hơn "area-btn" nên không hợp lý -->
       버튼
     </div>
   </div>
@@ -99,10 +100,3 @@
     </div>
   </div>
   ```
----
-## 3. CSS/Sass
-
-- 상태를 분기할 때는 HTML 기본 속성이나 클래스로 제어하며, 상태 클래스는 `is-` 접두사를 사용한다.
-- 변수명, 믹스인명은 케밥 케이스(kebab-case)를 사용한다.
-
----
