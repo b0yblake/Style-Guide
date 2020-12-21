@@ -1,9 +1,9 @@
 ## 1. HTML
 
-- 목적에 맞는 HTML 태그를 사용하며, SEO 최적화를 위해 HTML5 태그의 사용을 고려한다.
-- 렌더 트리 경량을 위해 불필요한 태그 작성을 지양한다.
-- 들여쓰기는 공백(space) 2문자를 사용한다.
-- Boolean 속성은 값을 따로 명시하지 않는다. *(e.g. `selected`, `disabled`, `checked`)*
+- Sử dụng các thẻ đa dạng, các mục đích khác nhau và chú ý dùng Html5 để đa dạng hóa, SEO.
+- Tránh sử dụng các tag không cần thiết ("</input>", "</img>",..)
+- Với hệ thống html lớn, lưu ý sử dụng lùi dòng 2 space thay vì 4 space.
+- Không cần thiết thêm giá trị boolean khi làm việc với các attribute state của thẻ  *(e.g. `selected`, `disabled`, `checked`)*
     ```html
     <!-- Bad -->
     <input type="text" disabled="true">
@@ -24,10 +24,10 @@
 
 ## 2. Sass
 ### 2-1. Common
-- 선택자는 클래스를 사용하고,  태그와 ID, 속성 선택자의 사용을 지양한다.
-- 들여쓰기는 공백(space) 2문자를 사용한다.
-- 큰 따옴표 대신 작은 따옴표를 사용한다.
-- 가독성 및 디버깅을 위해 한 줄에 속성을 하나씩, 선택자가 여러개일 경우에도 한 줄에 한 선택자씩 표시한다.
+- Với hệ thống html/css thuần túy, sử dụng selector tới class là hợp lý nhất thay vì sử dụng các attribute selector (Vue + react nên sử dụng attribte selector)
+- Với hệ thống html lớn, lưu ý sử dụng lùi dòng 2 space thay vì 4 space.
+- Sử dụng dấu nháy đơn thay vì nháy kép.
+- Với các lớp selector trùng nhau, đảm bảo nó được viết trên từng dòng 1.
   ```scss
   /* Bad */
   .selector, .selector-secondary, .selector[type=text] {
@@ -42,8 +42,8 @@
     margin: 15px;
   }
   ```
-- 최대 3depth 이하로 작성하며, 부모 선택자는 꼭 필요한 경우에만 작성한다. *(e.g 재선언, 컴포넌트 래핑 등)*
-- 값이 0일 경우 단위를 생략하며, 소수점일 경우 정수 부분까지 표기한다.
+- Chỉ nên dùng selector 3depth cho độ sâu, hay cố gắng module các thành phần.
+- Nếu giá trị là đơn vị thập phân, cố gắng giữ lại số 0 phía trước.
   ```scss
   /* Bad */
   .selector {
@@ -181,66 +181,3 @@
   ```javascript
   $("#parent-container").on("click", "a", delegatedClickHandler);
   ```
-
-### 3-2. Component
-  - `window.SIBF` 객체를 기준으로 생성자 함수를 만들고, 프로토타입 객체의 프로퍼티를 추가하는 방식
-  - 각 컴포넌트는 페이지 파일에서 생성자 함수를 호출하여 사용한다.
-    ```javascript
-    // 생성자 함수
-    win.SIBF['Accordion'] = function (container, args) {
-        var defParams = {
-            obj : container,
-            ...
-        };
-        this.opts = UTIL.def(defParams, (args || {}));
-        this.obj = $(this.opts.obj);
-        this.init();
-    };
-    
-    // 프로토타입
-    win.SIBF['Accordion'].prototype = {
-        init : function() {
-        ..
-        },
-        bindEvents: function() {
-        ..
-        }
-    }
-    ```
-
-### 3-3. Page
-  - 페이지별로 파일을 생성한 후 `win.SIBF` 객체에 메소드를 생성하여 사용한다.
-  - 요소 지정 시 전역으로 지정하지 않고, 해당 페이지의 고유 클래스 *(e.g. `.wrap-main`, `.wrap-exhibition`)* 를 기준으로 요소를 탐색하여 사용한다.
-    ```javascript
-    // 메인페이지용 객체 생성
-    win.SIBF.main = (function (container) {
-      var defParams = {
-          obj : container,
-          ...
-      };
-      return {
-          init : function () {
-              this.setElements();
-              this.callAccordionComponent();
-              ...
-          },
-          setElements : function () {
-              this.obj = $(defParams.obj);
-              this.navigationSwiper = this.obj.find('.main-navigation');
-          },
-          callAccordionComponent : function () {
-              new win.SIBF['Accordion']('.gnb__list', {
-                  listBox : '.gnb__item',
-                  btnTitle : '.gnb__btn',
-                  listContents : '.lnb'
-              });
-          }
-          ...
-      }
-    })('.wrap-main');
-    
-    // 호출
-    $(function () {
-        SIBF.main.init();
-    });
-    ```
