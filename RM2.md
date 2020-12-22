@@ -42,7 +42,7 @@
     margin: 15px;
   }
   ```
-- Chỉ nên dùng selector 3depth cho độ sâu, hay cố gắng module các thành phần.
+- Chỉ nên dùng selector 3depth cho độ sâu, hãy cố gắng module các thành phần.
 - Nếu giá trị là đơn vị thập phân, cố gắng giữ lại số 0 phía trước.
   ```scss
   /* Bad */
@@ -59,12 +59,12 @@
     background-color: rgba(0, 0, 0, 0.15);
   }
   ```
-- 인라인 CSS, `@extend` 사용을 지양한다.
-- 주석은 최종 산출물에 출력되지 않도록 인라인 주석(`//`)으로 사용한다.
+- Inline CSS, `@extend` nên tránh sử dụng, hoặc nếu sử dụng, hãy đảm bảo phần extend là common.
+- Sử dụng comment để CSS trong SASS được dễ hiểu nhất (`//`)
 
 ### 2-2. Fonts
-- 폰트관련 속성을 mobile/pc 환경에서 유동적으로 사용하기 위해, 유동 단위로 변환해주는 과정이다.
-- 기본 입력 단위는 **px**이며, **숫자**만 입력한다.
+- Việc sử dụng font giá trị "px" cho mobile/pc là không còn hợp lý vì môi trường 2 bên khác nhau, hãy đảm bảo giá trị font được dùng bằng `em` hoặc `rem`
+- Đơn vị truyền vào là **px**, giá trị font-weight, giá trị line-height.
 
 #### [Usage]
 ```scss
@@ -80,17 +80,17 @@
 ```
 
 #### [Process]
-1. font-size는 단위를 제외하고 숫자만 입력한다. font-weight, line-height는 생략 가능하다.
+1. Chỉ font-size:
     ```scss
       // font-size: 18px;
       @include fonts(18);
     ```
-2. font-weight의 재선언 없이 line-height를 사용하고 싶은 경우는 `false`값으로 대체한다.
+2. không có font-weight (dùng mặc định 400)
     ```scss
     // font-size: 18px; line-height: 22px;
     @include fonts(18, false, 22);
     ```
-3. 개발자도구 등으로 유동 단위로 변환된 값을 확인한다. line-height 값은 소수점 2째자리까지 반올림 처리된다.
+3. có đầy đủ các yếu tố
     ```scss
     /* Input */
     @include fonts(18, 700, 22);
@@ -104,23 +104,23 @@
 
 
 ### 2-3. SVG Sprite
-- svg 파일들을 하나의 스프라이트 이미지로 합쳐서 사용한다.
-- svg 파일 경로 : `/src/img/sprites-svg/{{폴더명}}/{{파일명}}.svg` 
-- 스프라이트 이미지는 각 폴더별로 1개씩 생성된다.
+- svg việc sử dụng file SVG sprite nhằm mục đích tối ưu tốc độ cũng như ratio của ảnh.
+- svg file path : `/src/img/sprites-svg/{{folder-name}}/{{file-name}}.svg` 
+- 1 file sprite tưng ứng với 1 folder ảnh icon SVG.
 
 #### [Usage]
 ```scss
-@include useSvg-{{폴더명}}('이미지명');
-@include useSvg-{{폴더명}}('이미지명', {{width}}px);
+@include useSvg-{{folder-name}}('file-name');
+@include useSvg-{{folder-name}}('file-name', {{width}}px);
 
 @include useSvg-pattern('pattern2');
 @include useSvg-common('main_icon-search', 20px);
 ```
 
 #### [Process]
-1. 사용할 svg 파일을 위에 기입된 **svg 파일 경로**에 추가한다.
-2. 신규 폴더명을 토대로 `/src/img/`, `/dist/img/` 경로에 SVG Sprite 이미지가 생성된다.  
-3. 이미지명 선언 시, single quotation 으로 사용한다.
+1. Add the svg file to be used to the **svg file path** listed above.
+2. Based on the new folder name, the SVG Sprite image is created in the paths `/src/img/` and `/dist/img/`.
+3. When declaring an image name, it is used as a single quotation.
     ```scss
     /* Bad */
     @include useSvg-common("main_icon-search");
@@ -128,7 +128,7 @@
     /* Good */
     @include useSvg-common('main_icon-search');
     ```
-4. 요소가 실제 파일 크기와 다른 크기여야 하는 경우, px 단위로 추가한다.<br> 이미지 비율을 유지하기 위해 width 값만 입력한다.
+4. If the element must be of a different size than the actual file size, add it in px units.<br> Enter only the width value to maintain the image ratio.
     ```scss
     @include useSvg-common('main_icon-search', 30px);
     ```
@@ -138,12 +138,12 @@
 ## 3. Javascript
 
 ### 3-1. Common
-- 스크립트 분기용 선택자는 `js-` 접두사를 사용하며, 이 선택자에는 스타일을 포함하지 않는다.
-- 인라인 CSS 사용을 지양하며, 필요 시 클래스를 추가, 삭제하여 스타일을 제어한다.
-- 변수는 함수 상단에 정의하며, for문 외부에서 선언한다.
-- 변수 선언 시 전역 선언을 지양하며, 하나의 var 선언에 결합한 형태로 사용한다.
-- 이벤트 바인딩은 `on()` / `off()` 메소드를 사용한다.
-- HTML에 이벤트 핸들러를 직접 설정하지 않는다.
+- The selection for the quarter and the script using the `js-` prefix, this selector does not include the style.
+- And avoiding the use inline CSS, add, and delete classes when necessary to control the style.
+- Variable and function definitions at the top, for statements, declarations from the outside.
+- And avoiding global declarations variable declarations, and used in the form bound to a declaration var.
+- Event binding uses `on ()` / `off ()` method.
+- It does not directly set the event handler to the HTML.
   ```html
   <!-- Bad -->
   <a id="myLink" href="#" onclick="myEventHandler();">my link</a>
@@ -153,7 +153,7 @@
 
   $('#myLink').on('click', myEventHandler);
   ```
-- 메서드 체이닝 시 가독성을 위해 줄바꿈을 사용한다.
+- When chaining method to use line breaks for readability.
   ```javascript
   // Bad
   $('#myLink').addClass('bold').on('click', myClickHandler).on('mouseover', myMouseOverHandler).show();
@@ -165,7 +165,7 @@
       .on('mouseover', myMouseOverHandler)
       .show();
   ```
-- 속성을 연속해서 변경할 때 메서드 체이닝 대신 객체 리터럴을 사용한다.
+- When you change the properties continuously uses the object literal instead of chaining method.
   ```javascript
   // Bad
   $myLink.attr('href', '#').attr('title', 'my link').attr('rel', 'external');
@@ -177,7 +177,7 @@
       rel: 'external'
   });
   ```
-- 자식요소가 동적으로 추가 또는 수정되는 경우, 이벤트 위임(Event delegation)을 사용한다.
+- If the child element is dynamically added or modified, using the event-propagation (Event delegation).
   ```javascript
   $("#parent-container").on("click", "a", delegatedClickHandler);
   ```
